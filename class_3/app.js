@@ -38,13 +38,25 @@ app.delete('/notes/:index', (req, res)=>{
 });
 
 
+// Patch /notes/:index - Update a note by index
 app.patch('/notes/:index', (req, res)=>{
     const index = req.params.index;
-    const descrtiption  = req.body.description;
+    const description  = req.body.description;
+    notes[index].description = description;
 
-    notes[index].description = descrtiption;
-    
     res.status(200).json({message: "Note updated successfully"});
 });
+
+
+// app.get('/notes', (req, res)=>{
+//     res.status(200).json({
+//         message:'Notes retrieved successfully',
+//         notes:notes
+//     });
+// });
+
+
+
+
 
 module.exports = app;
