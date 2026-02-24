@@ -35,15 +35,79 @@ app.get('/notes', async(req, res)=>{
     })
 })
 
-app.delete('notes/:id', async(req,res)=>{
-    const id = req.params.id;
-    await noteModel.findByIdAndDelete(id);
+// app.delete('/notes/:id', async (req, res) => {
+//     try {
+//         const id = req.params.id;
+// //   console.log("Received ID:", req.params.id);
+//         const deletedNote = await noteModel.findByIdAndDelete(id);
 
-    res.status(200).json({
-        message:"note deleted successfully"
-    })
+//         if (!deletedNote) {
+//             return res.status(404).json({
+//                 message: "Note not found"
+//             });
+//         }
+
+//         res.status(200).json({
+//             message: "Note deleted successfully",
+//             deletedNote
+//         });
+
+//     } catch (error) {
+//         res.status(500).json({
+//             message: "Error deleting note",
+//             error: error.message
+//         });
+//     }
+// });
+
+app.delete('/notes/:id', async (req, res)=>{
+    try{
+        const id = req.params.id;
+        const deletedNote = await noteModel.findByIdAndDelete(id);
+
+        if(!deletedNote){
+            return res.status(404).json({
+                message:"Note not found"
+            })
+        }       
+        res.status(200).json({
+            message:"Note deleted successfully",
+            deletedNote
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            message:"Error deleting note",
+            error:error.message
+        })
+        
+    }
 })
 
 
+
+app.patch('/notes/:id', async (req , res)=>{
+    try{
+        const id = req.params.id;
+        const data =  req.body;
+        const updatedNote = await noteModel.findByIdAndUpdate(id, data, {new:true});
+
+        if(!updatedNote){
+            return res.status(404).json({
+                message:"Note not found"
+            })
+        }
+        res.status(200).json({
+            message:"Note updated successfully",
+            updatedNote
+        })
+    }
+    catch(error){
+        res.status(500).json({
+            message:"Error updating note",
+            error:error.message
+        })
+    }
+})
 
 module.exports = app;
