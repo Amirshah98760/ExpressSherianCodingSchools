@@ -13,22 +13,57 @@ app.get('/', (req, res)=>{
 });
 
 
-app.post('/notes', async(req, res)=>{
-    const data = req.body;
-   await noteModel.create({
-        title:data.title,
-        description: data.description
-    });
+app.post('/notes', async (req, res) => {
+    try {
+        const data = req.body;
 
-    res.status(201).json({
-        message:"note created successfully"
-    })
-})
+        //VALIDATE Note Data
+        if (!data.title || !data.description) {
+            return res.status(400).json({
+                message: "Title and description are required"
+            });
+        }
+
+        // SAVE AFTER VALIDATION PASSES
+        const note = await noteModel.create({
+            title: data.title,
+            description: data.description
+        });
+
+        res.status(201).json({
+            message: "Note created successfully",
+            note
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Error creating note",
+            error: error.message
+        });
+    }
+});
+
+// app.post('/notes', async(req, res)=>{
+//     const data = req.body;
+//    await noteModel.create({
+//         title:data.title,
+//         description: data.description
+//     });
+
+//     res.status(201).json({
+//         message:"note created successfully"
+//     })
+// })
 
 
 app.get('/notes', async(req, res)=>{
     const notes = await noteModel.find();
 
+    if(notes.length === 0){
+        return res.status(404).json({
+            message:"No notes found"
+        })
+    }
     res.status(200).json({
         message:"notes retrieved successfully",
         notes:notes
@@ -108,6 +143,11 @@ app.patch('/notes/:id', async (req , res)=>{
             error:error.message
         })
     }
-})
+});
+
+
+
+
+
 
 module.exports = app;
