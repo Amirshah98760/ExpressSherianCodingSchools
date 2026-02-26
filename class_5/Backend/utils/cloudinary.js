@@ -14,7 +14,7 @@ const uploadOnCloudinary = async (localFilePath) => {
     // Upload the file to Cloudinary
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: "auto", // Automatically detects if it's image/pdf/video
-      folder: "School_Management_System" // Keeps your cloud organized
+      folder: "School_Management_System" 
     });
     
     // Successfully uploaded, delete the local temp file
