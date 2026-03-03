@@ -14,7 +14,8 @@ app.post('/post', async (req , res)=>{
 //    image
     const {title , description} = req.body;
 
-    if(!title || !description){
+    //validation for title and description
+    if(!title.trim() || !description.trim()){
         return res.status(400).json({
             success:false,
             message:"Please provide title and description"
