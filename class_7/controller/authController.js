@@ -94,6 +94,14 @@ const loginUser = async (req, res) => {
 
 }
 
+//update user profile
+
+// const updateUserProfile = async (req, res) => {
+//     // Implement update profile logic here
+// const { username, email } = req.params;
+
+
+// };
 
 module.exports = {
     registerUser,
